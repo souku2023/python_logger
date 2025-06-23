@@ -8,7 +8,7 @@ from functools import partial
 from types import FrameType
 from typing import Any
 
-from exceptiongroup import format_exception
+from traceback import format_exception
 
 # Import Custom Handlers
 from .file_handler import FileHandler
