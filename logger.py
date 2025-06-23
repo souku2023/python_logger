@@ -118,7 +118,6 @@ class Logger(logging.Logger):
     @staticmethod
     def __process_log_queue():
         """Process log records from the queue"""
-        print("Logger.__process_log_queue, Starting Log processing thread")
         while Logger.__running or not Logger.__log_queue.empty():
             try:
                 c = Logger.__log_queue.get(timeout=0.1)
