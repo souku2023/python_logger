@@ -1,3 +1,6 @@
+"""
+A simple Python logger configuration
+"""
 import atexit
 import inspect
 import logging

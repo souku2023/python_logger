@@ -1,6 +1,7 @@
 import logging
 
 
+# noinspection PyMissingOrEmptyDocstring
 class StreamFormatter(logging.Formatter):
 
     def formatException(self, exc_info):

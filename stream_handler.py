@@ -2,6 +2,7 @@ import logging
 from .stream_formatter import StreamFormatter
 
 
+# noinspection PyMissingOrEmptyDocstring
 class StreamHandler(logging.StreamHandler):
 
     def __init__(self):
