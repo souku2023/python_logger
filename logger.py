@@ -118,11 +118,8 @@ class Logger(logging.Logger):
         print("Logger.__process_log_queue, Starting Log processing thread")
         while Logger.__running or not Logger.__log_queue.empty():
             try:
-                record = Logger.__log_queue.get(timeout=0.1)
-                logger = record.name
-                if isinstance(logger, str):
-                    logger = logging.getLogger(logger)
-                logger.handle(record)
+                c = Logger.__log_queue.get(timeout=0.1)
+                c()
             except queue.Empty:
                 continue
             except Exception as e:
@@ -144,7 +141,7 @@ class Logger(logging.Logger):
             self._log(level, formatted_msg, args, **kwargs)
 
     def __enqueue_log_record(self, level: int, msg, frame, *args, **kwargs):
-        Logger.__log_queue.put(partial(self._log, level, msg, frame, *args, **kwargs))
+        Logger.__log_queue.put(partial(self.__add_log, level, msg, frame, *args, **kwargs))
 
     def d(self, msg, *args, **kwargs):
         """
@@ -153,7 +150,7 @@ class Logger(logging.Logger):
         To pass exception information, use the keyword argument exc_info with
         a true value, e.g.
         """
-        self.__add_log(logging.DEBUG, msg, inspect.currentframe(), *args, **kwargs)
+        self.__enqueue_log_record(logging.DEBUG, msg, inspect.currentframe(), *args, **kwargs)
 
     def i(self, msg, *args, **kwargs):
         """
@@ -162,7 +159,7 @@ class Logger(logging.Logger):
         To pass exception information, use the keyword argument exc_info with
         a true value, e.g.
         """
-        self.__add_log(logging.INFO, msg, inspect.currentframe(), *args, **kwargs)
+        self.__enqueue_log_record(logging.INFO, msg, inspect.currentframe(), *args, **kwargs)
 
     def w(self, msg, *args, **kwargs):
         """
@@ -171,7 +168,7 @@ class Logger(logging.Logger):
         To pass exception information, use the keyword argument exc_info with
         a true value, e.g.
         """
-        self.__add_log(logging.WARNING, msg, inspect.currentframe(), *args, **kwargs)
+        self.__enqueue_log_record(logging.WARNING, msg, inspect.currentframe(), *args, **kwargs)
 
     def e(self, e: Exception, *args, **kwargs):
         """
@@ -179,7 +176,7 @@ class Logger(logging.Logger):
         """
         msg = "Stack Trace:"
         msg += format_traceback(e)
-        self.__add_log(logging.ERROR, msg, inspect.currentframe(), *args, **kwargs)
+        self.__enqueue_log_record(logging.ERROR, msg, inspect.currentframe(), *args, **kwargs)
 
     def c(self, msg, *args, **kwargs):
         """
@@ -188,4 +185,4 @@ class Logger(logging.Logger):
         To pass exception information, use the keyword argument exc_info with
         a true value, e.g.
         """
-        self.__add_log(logging.CRITICAL, msg, inspect.currentframe(), *args, **kwargs)
+        self.__enqueue_log_record(logging.CRITICAL, msg, inspect.currentframe(), *args, **kwargs)
