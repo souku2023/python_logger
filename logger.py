@@ -19,8 +19,9 @@ from .stream_handler import StreamHandler
 
 
 def format_traceback(e: Exception) -> str:
-    """
-    Format e.__traceback__ for Log message.
+    """Format e.__traceback__ for Log message.
+
+    :parameter e:
     """
     return "\nTraceback:" + "\n\t".join(
         traceback.format_tb(e.__traceback__) + ["Exception Info:"] \
