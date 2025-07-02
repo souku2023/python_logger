@@ -68,7 +68,7 @@ def __get_caller_info(frame: FrameType) -> str:
         method_name = frame.f_code.co_name
         return f"{class_name}.{method_name}"
     except Exception as e:
-        print("Error getting caller info: ", format_traceback(e))
+        print("LOGGER: Error getting caller info: ", format_traceback(e))
         return "unknown.unknown"
     finally:
         # Avoid reference cycles
@@ -108,7 +108,7 @@ class Logger(logging.Logger):
     @staticmethod
     def __start_background_logging():
         """Start the background logging thread"""
-        print("Logger.__start_background_logging, Starting logger thread")
+        print("LOGGER: Starting logger thread")
         Logger.__running = True
         Logger.__background_thread = threading.Thread(
             target=Logger.__process_log_queue, daemon=True
@@ -127,7 +127,7 @@ class Logger(logging.Logger):
                 continue
             except Exception as e:
                 # Fallback to stderr if logging fails
-                print(f"Logger error: {e}")
+                print(f"LOGGER: error: {e}")
 
     @staticmethod
     def shutdown():
@@ -136,7 +136,7 @@ class Logger(logging.Logger):
         if Logger.__background_thread and Logger.__background_thread.is_alive():
             Logger.__background_thread.join(timeout=1.0)
         Logger.__background_thread = None
-        print("Logger.shutdown, Shutting down logger")
+        print("LOGGER: Shutting down logger")
 
     def __add_log(self, level: int, msg, frame, *args, **kwargs):
         if self.isEnabledFor(level):
