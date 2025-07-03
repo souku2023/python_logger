@@ -8,10 +8,9 @@ import queue
 import threading
 import traceback
 from functools import partial
+from traceback import format_exception
 from types import FrameType
 from typing import Any
-
-from traceback import format_exception
 
 # Import Custom Handlers
 from .file_handler import FileHandler
@@ -25,7 +24,7 @@ def format_traceback(e: Exception) -> str:
     """
     return "\nTraceback:" + "\n\t".join(
         traceback.format_tb(e.__traceback__) + ["Exception Info:"] \
-            + format_exception(e)
+        + format_exception(e)
     )
 
 

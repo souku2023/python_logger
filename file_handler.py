@@ -1,6 +1,7 @@
-import os
 import logging
+import os
 from datetime import datetime
+
 from .file_formatter import FileFormatter
 
 
@@ -8,12 +9,13 @@ class FileHandler(logging.FileHandler):
     """
     Handle writes to file.
     """
+
     def __init__(
-        self,
-        mode: str = "a",
-        encoding: str | None = None,
-        delay: bool = False,
-        errors: str | None = None,
+            self,
+            mode: str = "a",
+            encoding: str | None = None,
+            delay: bool = False,
+            errors: str | None = None,
     ) -> None:
         """ """
         self.__filename = "App_{}-{}-{}_{}-{}.log".format(
